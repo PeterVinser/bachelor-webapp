@@ -35,7 +35,7 @@ def experiment_page():
 
     if st.session_state.current_answer_data:
         answer = st.session_state.current_answer_data["answer"]
-        st.write(f"{ANSWER} {answer}")
+        st.write(f"{ANSWER}: {answer}")
 
         col1, col2 = st.columns(2)
 
