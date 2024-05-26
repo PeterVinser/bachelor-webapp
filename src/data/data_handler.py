@@ -10,12 +10,12 @@ client = init_client()
 database = client.get_database("bachelor_db")
 
 @st.cache_data()
-def get_passage():
+def get_passages():
     collection = database.get_collection("passage")
 
-    passages = collection.aggregate([{ '$sample': {'size': 1}}])
+    passages = collection.aggregate([{ '$sample': {'size': 10}}])
     
-    return passages.next()
+    return list(passages)
 
 def save_to_db(query, result, correct):
     result["query"] = query

@@ -2,7 +2,7 @@ import streamlit as st
 
 TITLE = "Dziękuję za udział w badaniu!"
 MESSAGE = "Jeśli są Państwo zainteresowani wynikami oraz opracowaniem badania, proszę o kontakt na mojego maila studenckiego."
-EMAIL = f"Email: {st.secrets['e`mail']}"
+EMAIL = f"Email: {st.secrets['email']}"
 
 def ending_page():
     st.title(TITLE)

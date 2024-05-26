@@ -4,8 +4,8 @@ from utils.api_utils import get_control_variables, fetch_answer
 
 TITLE = "Proszę ocenić odpowiedź kiedy się pojawi"
 FRAGMENT = "**Fragment na podstawie, którego powinna zostać sformułowana odpowiedź:**"
-QUESTION = "**Pytanie:**"
-ANSWER = "**Odpowiedź:**"
+QUESTION = "**Pytanie**"
+ANSWER = "**Odpowiedź**"
 FETCHING_ANSWER = "Odpowiedź jest generowana..."
 CORRECT = "Poprawna"
 WRONG = "Niepoprawna"
@@ -13,11 +13,13 @@ WRONG = "Niepoprawna"
 def experiment_page():
     st.title(TITLE)
     st.write(FRAGMENT)
-    st.write(st.session_state.fragment)
 
-    query = st.session_state.queries[st.session_state.page_number - 1]
+    passage = st.session_state.passages[st.session_state.page_number - 1]
 
-    st.write(f"{QUESTION} {query}")
+    fragment, query = passage["context"], passage["question"]
+
+    st.write(fragment)
+    st.write(f"{QUESTION}: {query}")
 
     if st.session_state.current_answer_data is None:
         retrieval_type, temperature = get_control_variables()
@@ -26,12 +28,9 @@ def experiment_page():
             response = fetch_answer(query, retrieval_type, temperature)
 
         if response:
-            st.session_state.current_answer_data = {
-                "answer": response["answer"],
-                "chunk_ids": response["context"],
-                "retrieval_type": retrieval_type,
-                "temperature": temperature
-            }
+            response["retrieval_type"] = retrieval_type
+            response["temperature"] = temperature
+            st.session_state.current_answer_data = response
 
     if st.session_state.current_answer_data:
         answer = st.session_state.current_answer_data["answer"]

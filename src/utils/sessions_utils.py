@@ -1,16 +1,12 @@
 import streamlit as st
-from data.data_handler import get_passage
-
+from data.data_handler import get_passages
 
 def init_session_state():
-    if 'passage_loaded' not in st.session_state:
+    if 'passages_loaded' not in st.session_state:
         st.session_state.data_loaded = False
-    
-    if 'fragment' not in st.session_state:
-        st.session_state.fragment = ''
-    
-    if 'queries' not in st.session_state:
-        st.session_state.queries = []
+
+    if 'passages' not in st.session_state:
+        st.session_state.passages = []
 
     if 'consent_given' not in st.session_state:
         st.session_state.consent_given = False
@@ -22,9 +18,5 @@ def init_session_state():
     
 def load_data_into_session():
     if not st.session_state.data_loaded:
-        passage = get_passage()
-        st.session_state.fragment = passage['context']
-        st.session_state.queries = passage['queries']
-        st.session_state.passage_loaded = True
-
-        st.session_state.queries_count = len(passage['queries'])
+        st.session_state.passages = get_passages()
+        st.session_state.passages_loaded = True

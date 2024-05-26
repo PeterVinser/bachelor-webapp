@@ -34,7 +34,7 @@ def fetch_answer(query, retrieval_type, temperature):
     return None
 
 def get_control_variables():
-    retrieval_type = random.randint(0, 2)
+    retrieval_type = random.choice([0, 2])
     temperature = random.uniform(0.1, 0.9)
 
     return retrieval_type, temperature

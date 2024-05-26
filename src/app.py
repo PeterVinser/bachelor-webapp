@@ -21,7 +21,7 @@ def main():
     if not st.session_state.consent_given:
         titular_page()
     else:
-        if st.session_state.page_number <= st.session_state.queries_count:
+        if st.session_state.page_number <= 10:
             experiment_page()
         else:
             ending_page()
