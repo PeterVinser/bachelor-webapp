@@ -10,6 +10,11 @@ FETCHING_ANSWER = "Odpowiedź jest generowana..."
 CORRECT = "Poprawna"
 WRONG = "Niepoprawna"
 
+def refresh_state(query, correct):
+    save_to_db(query, st.session_state.current_answer_data, correct)
+    st.session_state.page_number += 1
+    st.session_state.current_answer_data = None
+
 def experiment_page():
     st.title(TITLE)
     st.write(FRAGMENT)
@@ -21,33 +26,28 @@ def experiment_page():
     st.write(fragment)
     st.write(f"{QUESTION}: {query}")
 
-    if st.session_state.current_answer_data is None:
-        retrieval_type, temperature = get_control_variables()
+    answer_component = st.empty()
+
+    with st.empty():
+        if st.session_state.current_answer_data is None:
+            retrieval_type, temperature = get_control_variables()
+            
+            with st.spinner(FETCHING_ANSWER):
+                response = fetch_answer(query, retrieval_type, temperature)
+
+            if response:
+                response["retrieval_type"] = retrieval_type
+                response["temperature"] = temperature
+                st.session_state.current_answer_data = response
+
+                answer = st.session_state.current_answer_data["answer"]
+                answer_component.write(f"{ANSWER}: {answer}")
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    st.button(CORRECT, key="correct_button", on_click=refresh_state, args=[query, True])
+
+                with col2:
+                    st.button(WRONG, key="wrong_button", on_click=refresh_state, args=[query, False])
         
-        with st.spinner(FETCHING_ANSWER):
-            response = fetch_answer(query, retrieval_type, temperature)
-
-        if response:
-            response["retrieval_type"] = retrieval_type
-            response["temperature"] = temperature
-            st.session_state.current_answer_data = response
-
-    if st.session_state.current_answer_data:
-        answer = st.session_state.current_answer_data["answer"]
-        st.write(f"{ANSWER}: {answer}")
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-            if st.button(CORRECT, key="correct_button"):
-                save_to_db(query, st.session_state.current_answer_data, True)
-                st.session_state.page_number += 1
-                st.session_state.current_answer_data = None
-                st.rerun()
-
-        with col2:
-            if st.button(WRONG, key="wrong_button"):
-                save_to_db(query, st.session_state.current_answer_data, False)
-                st.session_state.page_number += 1
-                st.session_state.current_answer_data = None
-                st.rerun()

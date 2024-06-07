@@ -9,13 +9,13 @@ Państwa zadaniem jest zidentyfikować, czy odpowiedź jest poprawna zgodnie z p
 Państwa odpowiedzi będą całkowicie anonimowe."""
 CONSENT_MESSAGE = "Wyrażam zgodę."
 
+def refresh_state():
+    st.session_state.consent_given = True
+    st.session_state.page_number = 1
+
 def titular_page():
     st.title(TITLE)
     
     st.write(WELCOME_MESSAGE)
 
-    if st.button(CONSENT_MESSAGE):
-        st.session_state.consent_given = True
-        st.session_state.page_number = 1
-
-        st.rerun()
+    st.button(CONSENT_MESSAGE, on_click=refresh_state)
