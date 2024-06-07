@@ -5,7 +5,7 @@ import certifi
 
 @st.cache_resource
 def init_client():
-    return MongoClient(st.secrets["mongo_uri"], server_api=ServerApi('1'), tlsCAFile=certifi.where())
+    return MongoClient(st.secrets["mongo_uri"], tlsCAFile=certifi.where())
 
 client = init_client()
 database = client.get_database("bachelor_db")
