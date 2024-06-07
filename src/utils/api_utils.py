@@ -30,7 +30,7 @@ def fetch_answer(query, retrieval_type, temperature):
         response.raise_for_status()
         return response.json()
     except Exception as e:
-        st.error("Error occured")
+        st.error(f"Error occured: {e}")
     return None
 
 def get_control_variables():
