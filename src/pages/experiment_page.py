@@ -39,14 +39,14 @@ def experiment_page():
         col1, col2 = st.columns(2)
 
         with col1:
-            if st.button(CORRECT):
+            if st.button(CORRECT, key="correct_button"):
                 save_to_db(query, st.session_state.current_answer_data, True)
                 st.session_state.page_number += 1
                 st.session_state.current_answer_data = None
                 st.rerun()
 
         with col2:
-            if st.button(WRONG):
+            if st.button(WRONG, key="wrong_button"):
                 save_to_db(query, st.session_state.current_answer_data, False)
                 st.session_state.page_number += 1
                 st.session_state.current_answer_data = None
