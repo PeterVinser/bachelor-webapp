@@ -10,7 +10,7 @@ def init_client():
 client = init_client()
 database = client.get_database("bachelor_db")
 
-@st.cache_data(ttl=600)
+@st.cache_data()
 def get_passages():
     collection = database.get_collection("passage")
 
