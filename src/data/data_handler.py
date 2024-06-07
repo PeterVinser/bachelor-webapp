@@ -1,10 +1,11 @@
 import streamlit as st
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+import certifi
 
 @st.cache_resource
 def init_client():
-    return MongoClient(st.secrets["mongo_uri"], server_api=ServerApi('1'), connect=False)
+    return MongoClient(st.secrets["mongo_uri"], server_api=ServerApi('1'), tlsCAFile=certifi.where())
 
 client = init_client()
 database = client.get_database("bachelor_db")
