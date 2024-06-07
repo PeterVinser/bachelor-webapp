@@ -4,7 +4,7 @@ from pymongo.server_api import ServerApi
 
 @st.cache_resource
 def init_client():
-    return MongoClient(st.secrets["mongo_uri"], server_api=ServerApi('1'))
+    return MongoClient(st.secrets["mongo_uri"], server_api=ServerApi('1'), connect=False)
 
 client = init_client()
 database = client.get_database("bachelor_db")
